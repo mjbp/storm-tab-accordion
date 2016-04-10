@@ -1,7 +1,7 @@
 {
   "name": "storm-tab-accordion",
   "version": "0.1.0",
-  "description": "",
+  "description": "Accessible tabs and accordion for multi-panelled content areas",
   "author": "stormid",
   "license": "MIT",
   "repository": {
