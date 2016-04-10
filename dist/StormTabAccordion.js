@@ -1,10 +1,9 @@
-/*global window, document, require, define, module*/
 /**
- * @name StormTabAccordion
- * @version 0.1.0: Wed, 15 Oct 2015
- * @author mjbp
- */
-(function(root, factory) {
+ * @name storm-tab-accordion: 
+ * @version 0.1.0: Sun, 10 Apr 2016 14:10:32 GMT
+ * @author stormid
+ * @license MIT
+ */(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof exports === 'object') {
