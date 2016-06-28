@@ -1,12 +1,10 @@
 /**
  * @name storm-tab-accordion: Accessible tabs and accordion for multi-panelled content areas
- * @version 0.2.0: Wed, 22 Jun 2016 14:13:34 GMT
+ * @version 0.3.1: Tue, 28 Jun 2016 16:38:03 GMT
  * @author stormid
  * @license MIT
  */(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define([], factory);
-  } else if (typeof exports === 'object') {
+    if (typeof exports === 'object') {
     module.exports = factory();
   } else {
     root.StormTabAccordion = factory();
@@ -26,6 +24,7 @@
             currentClass: 'active',
 			active: 0
         },
+        hash = location.hash.slice(1) || null,
         StormTabAccordion = {
 			init: function(){
 				this.tabs = [].slice.call(this.DOMElement.querySelectorAll(this.settings.tabClass));
@@ -35,7 +34,12 @@
 					return document.getElementById(el.getAttribute('href').substr(1)) || console.error('Tab target not found');
 				 });
 					
-				this.current = this.settings.active;
+                this.current = this.settings.active;
+				this.targets.forEach(function(target, i){
+                    if(target.getAttribute('id') === hash) {
+                         this.current = i;
+                    }
+                }.bind(this));
 				this.initAria();
 				this.initTriggers(this.tabs);
 				this.initTriggers(this.titles);
@@ -98,9 +102,9 @@
                     }
                 };
 
-                STORM.UTILS.classlist(this.tabs[i])[methods[type].classlist](this.settings.currentClass);
-                STORM.UTILS.classlist(this.titles[i])[methods[type].classlist](this.settings.currentClass);
-                STORM.UTILS.classlist(this.targets[i])[methods[type].classlist](this.settings.currentClass);
+                this.tabs[i].classList[methods[type].classlist](this.settings.currentClass);
+                this.titles[i].classList[methods[type].classlist](this.settings.currentClass);
+                this.targets[i].classList[methods[type].classlist](this.settings.currentClass);
                 STORM.UTILS.attributelist.toggle(this.targets[i], 'aria-hidden');
                 STORM.UTILS.attributelist.toggle(this.tabs[i], ['aria-selected', 'aria-expanded']);
                 STORM.UTILS.attributelist.toggle(this.titles[i], ['aria-selected', 'aria-expanded']);
@@ -123,6 +127,9 @@
 					this.open(i);
 					return this;
 				}
+
+                var nextNode = this.targets[i].getAttribute('id');
+                window.history.pushState({ URL: '#' + nextNode}, '', '#' + nextNode);
 				 this.close(this.current)
 					.open(i);
 				return this;
@@ -138,9 +145,9 @@
         var tabAccordions = [];
 		
 		els.forEach(function(el, i){
-            instances[i] = STORM.UTILS.assign(Object.create(StormTabAccordion), {
+            instances[i] = Object.assign(Object.create(StormTabAccordion), {
                 DOMElement: el,
-                settings: STORM.UTILS.merge({}, defaults, opts)
+                settings: Object.assign({}, defaults, opts)
             });
             
             instances[i].init();
