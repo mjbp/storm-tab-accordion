@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Accessible tabs and accordion for multi-panelled content areas
- * @version 0.3.1: Tue, 28 Jun 2016 16:36:51 GMT
+ * @version 0.4.0: Wed, 29 Jun 2016 12:33:40 GMT
  * @author stormid
  * @license MIT
  */(function(root, factory) {
@@ -145,9 +145,9 @@
         var tabAccordions = [];
 		
 		els.forEach(function(el, i){
-            instances[i] = STORM.UTILS.assign(Object.create(StormTabAccordion), {
+            instances[i] = Object.assign(Object.create(StormTabAccordion), {
                 DOMElement: el,
-                settings: STORM.UTILS.merge({}, defaults, opts)
+                settings: Object.assign({}, defaults, opts)
             });
             
             instances[i].init();

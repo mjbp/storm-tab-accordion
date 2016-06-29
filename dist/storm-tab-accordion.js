@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Accessible tabs and accordion for multi-panelled content areas
- * @version 0.3.1: Tue, 28 Jun 2016 16:38:03 GMT
+ * @version 0.4.0: Wed, 29 Jun 2016 12:33:40 GMT
  * @author stormid
  * @license MIT
  */(function(root, factory) {
