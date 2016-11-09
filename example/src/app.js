@@ -1,23 +1,7 @@
-var UTILS = {
-		attributelist: require('storm-attributelist')
-	},
-	UI = (function(w, d) {
-		'use strict';
+import TabAccordion from './libs/storm-tab-accordion';
 
-		var TabAccordion = require('./libs/storm-tab-accordion'),
-			init = function() {
-				TabAccordion.init('.js-tab-accordion');
-			};
-
-		return {
-			init: init
-		};
-
-	})(window, document, undefined);
-
-global.STORM = {
-    UTILS: UTILS,
-    UI: UI
-};
-
-if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.UI.init, false);
+const onDOMContentLoadedTasks = [() => {
+	TabAccordion.init('.js-tab-accordion');
+}];
+    
+if('addEventListener' in window) window.addEventListener('DOMContentLoaded', () => { onDOMContentLoadedTasks.forEach((fn) => fn()); });
