@@ -36,6 +36,8 @@ const KEY_CODES = {
 			this.initTitles();
 			this.initTabs();
 			this.open(this.current);
+
+			return this;
 		},
 		initAria() {
 			this.tabs.forEach(el => {

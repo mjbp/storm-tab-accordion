@@ -1,7 +1,7 @@
 {
-  "name": "storm-tabs",
-  "version": "0.6.0",
-  "description": "Multi-panelled content areas ",
+  "name": "storm-tab-accordion",
+  "version": "0.5.0",
+  "description": "Tab and accordion ui component for multi-panelled content areas",
   "author": "mjbp",
   "license": "MIT",
   "repository": {
@@ -15,6 +15,8 @@
   "keywords": [
     "stormid",
     "tabs",
+    "accordion",
+    "tab-accordion",
     "UI"
   ],
   "scripts": {

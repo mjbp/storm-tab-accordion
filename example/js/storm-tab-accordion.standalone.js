@@ -1,6 +1,6 @@
 /**
  * @name storm-tabs: Multi-panelled content areas 
- * @version 0.6.0: Wed, 09 Nov 2016 18:11:46 GMT
+ * @version 0.6.0: Thu, 10 Nov 2016 13:36:12 GMT
  * @author mjbp
  * @license MIT
  */
@@ -63,6 +63,8 @@ var KEY_CODES = {
 		this.initTitles();
 		this.initTabs();
 		this.open(this.current);
+
+		return this;
 	},
 	initAria: function initAria() {
 		this.tabs.forEach(function (el) {

@@ -55,9 +55,6 @@
             padding:20px;
             margin-bottom:40px;
         }
-        section {
-            margin-bottom: 3rem;
-        }
         .container {
             clear:both;
             overflow:hidden;
@@ -69,53 +66,86 @@
             width:100%;
             margin-left:-30px;
         }
-        .tabs__nav {
+        .tab-accordion__nav {
             display: block;
             border-bottom:2px solid #eee; 
         }
-        .tabs__nav-link {
+        .tab-accordion__nav-link {
             display: inline-block;
             padding:.5rem 1rem;
+            color:blue;
+            text-decoration: none;
         }
-        .tabs__nav-link:hover {
+        .tab-accordion__nav-link:hover {
             background-color:#fafafa;
         }
-        .tabs__nav-link.active{
+        .tab-accordion__nav-link.active{
             background:#eee;
         }
-        .tabs__section {
+
+        .tab-accordion__title {
+            margin:0;
+            cursor: pointer;
+            padding:1rem;
+            border-top: 3px solid #fff;
+            background-color: #fafafa;
+            font-size:1.1rem;
+            color:blue;
+        }
+        .tab-accordion__title:hover {
+            background-color:#eee;
+        }
+
+        .tab-accordion__nav {
+            display:none;
+        }
+        .tab-accordion__inner {
             position: absolute;
             clip: rect(0, 0, 0, 0);
             visibility: hidden;
         }
-        .tabs__section.active {
+        .tab-accordion__section.active  .tab-accordion__title {
+            background-color:#eee;
+        }
+        .tab-accordion__section.active .tab-accordion__inner {
             position: relative;
             clip:auto;
             padding:2rem;
-            background:#eee;
+            background-color:#eee;
             visibility: visible;
         }
 
-
-
-        .tab-accordion__tabs {
-            display:none;
-        }
         @media(min-width:768px){
-            .tab-accordion-target h1 {
+            .tab-accordion__title {
                 display:none;
             }
-            .tab-accordion__tabs {
+            .tab-accordion__nav {
                 display:block;
                 overflow: hidden;
             }
+            .tab-accordion__section {
+                position: absolute;
+                clip: rect(0, 0, 0, 0);
+                visibility: hidden;
+            }
+            .tab-accordion__section.active {
+                position: relative;
+                clip:auto;
+                padding:2rem;
+                background:#eee;
+                visibility: visible;
+            }
+            .tab-accordion__section.active .tab-accordion__inner {
+                background:#eee;
+            }
         }
+
         .tab-accordion__inner {
             max-height:0;
             overflow:hidden;
             clear:both;
         }
-        .tab-accordion-target.active .tab-accordion__inner {
+        .tab-accordion__section.active .tab-accordion__inner {
             max-height:10000px;
         }
     </style>
@@ -127,42 +157,32 @@
     <div class="container">
         <h1>Tab accordion</h1>
         <div class="js-tab-accordion">
-            <nav role="tablist" class="tab-accordion__tabs">
-                <a class="js-tab-accordion-tab" href="#target-1">Item 1</a>
-                <a class="js-tab-accordion-tab" href="#target-2">Item 2</a>
-                <a class="js-tab-accordion-tab" href="#target-3">Item 3</a>
-                <a class="js-tab-accordion-tab" href="#target-4">Item 4</a>
-                <a class="js-tab-accordion-tab" href="#target-5">Item 5</a>
-                <a class="js-tab-accordion-tab" href="#target-6">Item 6</a>
-                <a class="js-tab-accordion-tab" href="#target-7">Item 7</a>
+            <nav role="tablist" class="tab-accordion__nav">
+                <a class="js-tab-accordion-tab tab-accordion__nav-link" href="#target-1">Item 1</a>
+                <a class="js-tab-accordion-tab tab-accordion__nav-link" href="#target-2">Item 2</a>
+                <a class="js-tab-accordion-tab tab-accordion__nav-link" href="#target-3">Item 3</a>
+                <a class="js-tab-accordion-tab tab-accordion__nav-link" href="#target-4">Item 4</a>
+                <a class="js-tab-accordion-tab tab-accordion__nav-link" href="#target-5">Item 5</a>
             </nav>
-            <section id="target-1" class="tab-accordion-target">
-                <h1 class="js-tab-accordion-title">Item 1</h1>
+            <section id="target-1" class="tab-accordion__section">
+                <h1 class="js-tab-accordion-title tab-accordion__title">Item 1</h1>
                 <div class="tab-accordion__inner">One</div>
             </section>
-            <section id="target-2" class="tab-accordion-target">
-                <h1 class="js-tab-accordion-title">Item 2</h1>
+            <section id="target-2" class="tab-accordion__section">
+                <h1 class="js-tab-accordion-title tab-accordion__title">Item 2</h1>
                 <div class="tab-accordion__inner">Two</div>
             </section>
-            <section id="target-3" class="tab-accordion-target">
-                <h1 class="js-tab-accordion-title">Item 3</h1>
+            <section id="target-3" class="tab-accordion__section">
+                <h1 class="js-tab-accordion-title tab-accordion__title">Item 3</h1>
                 <div class="tab-accordion__inner">Three</div>
             </section>
-            <section id="target-4" class="tab-accordion-target">
-                <h1 class="js-tab-accordion-title">Item 4</h1>
+            <section id="target-4" class="tab-accordion__section">
+                <h1 class="js-tab-accordion-title tab-accordion__title">Item 4</h1>
                 <div class="tab-accordion__inner">Four</div>
             </section>
-            <section id="target-5" class="tab-accordion-target">
-                <h1 class="js-tab-accordion-title">Item 5</h1>
+            <section id="target-5" class="tab-accordion__section">
+                <h1 class="js-tab-accordion-title tab-accordion__title">Item 5</h1>
                 <div class="tab-accordion__inner">Five</div>
-            </section>
-            <section id="target-6" class="tab-accordion-target">
-                <h1 class="js-tab-accordion-title">Item 6</h1>
-                <div class="tab-accordion__inner">Six</div>
-            </section>
-            <section id="target-7" class="tab-accordion-target">
-                <h1 class="js-tab-accordion-title">Item 7</h1>
-                <div class="tab-accordion__inner">Seven</div>
             </section>
         </div>
     </div>
