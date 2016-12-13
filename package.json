@@ -6,12 +6,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mjbp/storm-tabs.git"
+    "url": "https://github.com/mjbp/storm-tab-accordion.git"
   },
   "bugs": {
-    "url": "https://github.com/mjbp/storm-tabs/issues"
+    "url": "https://github.com/mjbp/storm-tab-accordion/issues"
   },
-  "main": "dist/storm-tabs.min.js",
+  "main": "dist/storm-tab-accordion.min.js",
   "keywords": [
     "stormid",
     "tabs",
