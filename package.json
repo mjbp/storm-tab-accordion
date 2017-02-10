@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/mjbp/storm-tab-accordion/issues"
   },
-  "main": "dist/storm-tab-accordion.min.js",
+  "main": "dist/storm-tab-accordion.js",
   "keywords": [
     "stormid",
     "tabs",
