@@ -14,6 +14,7 @@
   "main": "dist/storm-tab-accordion.js",
   "keywords": [
     "stormid",
+    "component",
     "tabs",
     "accordion",
     "tab-accordion",
