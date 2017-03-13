@@ -66,7 +66,7 @@ Load('/content/js/async/storm-tab-accordion.standalone.js')
 
 e.g.
 ```
-TabAccordion.init('.js-tab-accordion',);
+TabAccordion.init('.js-tab-accordion');
 ```
 
 
