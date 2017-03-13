@@ -201,9 +201,9 @@ const KEY_CODES = {
 			this.titles[i].classList[methods[type].classlist](this.settings.currentClass);
 			this.targets[i].classList[methods[type].classlist](this.settings.currentClass);
 
-			this.targets[i].setAttribute('aria-hidden', !this.targets[i].getAttribute('aria-hidden'));
-			this.tabs[i].setAttribute('aria-selected', !this.targets[i].getAttribute('aria-selected'));
-			this.tabs[i].setAttribute('aria-expanded', !this.targets[i].getAttribute('aria-expanded'));
+			this.targets[i].setAttribute('aria-hidden', this.targets[i].getAttribute('aria-hidden') === 'true' ? 'false' : 'true');
+			this.tabs[i].setAttribute('aria-selected', this.tabs[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true');
+			this.tabs[i].setAttribute('aria-expanded', this.tabs[i].getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
 			methods[type].tabIndex.target.setAttribute('tabIndex', methods[type].tabIndex.value);
 			
 		},

@@ -18,6 +18,7 @@
     "tabs",
     "accordion",
     "tab-accordion",
+    "component",
     "UI"
   ],
   "scripts": {

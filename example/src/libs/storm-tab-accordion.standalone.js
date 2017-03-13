@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 0.5.0: Fri, 10 Feb 2017 17:52:57 GMT
+ * @version 0.5.0: Mon, 13 Mar 2017 12:52:27 GMT
  * @author mjbp
  * @license MIT
  */
@@ -242,9 +242,9 @@ var KEY_CODES = {
 		this.titles[i].classList[methods[type].classlist](this.settings.currentClass);
 		this.targets[i].classList[methods[type].classlist](this.settings.currentClass);
 
-		this.targets[i].setAttribute('aria-hidden', !this.targets[i].getAttribute('aria-hidden'));
-		this.tabs[i].setAttribute('aria-selected', !this.targets[i].getAttribute('aria-selected'));
-		this.tabs[i].setAttribute('aria-expanded', !this.targets[i].getAttribute('aria-expanded'));
+		this.targets[i].setAttribute('aria-hidden', this.targets[i].getAttribute('aria-hidden') === 'true' ? 'false' : 'true');
+		this.tabs[i].setAttribute('aria-selected', this.tabs[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true');
+		this.tabs[i].setAttribute('aria-expanded', this.tabs[i].getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
 		methods[type].tabIndex.target.setAttribute('tabIndex', methods[type].tabIndex.value);
 	},
 	open: function open(i) {
