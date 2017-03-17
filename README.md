@@ -1,4 +1,4 @@
-#Storm Tab Accordion
+# Storm Tab Accordion
 
 [![Build Status](https://travis-ci.org/mjbp/storm-tab-accordion.svg?branch=master)](https://travis-ci.org/mjbp/storm-tab-accordion)
 [![codecov.io](http://codecov.io/github/mjbp/storm-tab-accordion/coverage.svg?branch=master)](http://codecov.io/github/mjbp/storm-tab-accordion?branch=master)
@@ -7,10 +7,10 @@
 Tab and accordion ui component for multi-panelled content areas 
 
 
-##Example
+## Example
 [https://mjbp.github.io/storm-tab-accordion](https://mjbp.github.io/storm-tab-accordion)
 
-##Usage
+## Usage
 HTML
 ```
 <div class="js-tab-accordion">
@@ -112,7 +112,7 @@ Sample minimum CSS required to show/hide each section
 }
 ```
 
-##Options
+## Options
 ```
     {
 		tabClass: '.js-tab-accordion-tab',
@@ -128,18 +128,18 @@ TabAccordion.init('.js-tab-accordion');
 ```
 
 
-##Tests
+## Tests
 ```
 npm run test
 ```
 
-##Browser support
+## Browser support
 This is module has both es6 and es5 distributions. The es6 version should be used in a workflow that transpiles.
 
 This module depends upon Object.assign, element.classList, and Promises, available in all evergreen browsers. ie9+ is supported with polyfills, ie8+ will work with even more polyfills for Array functions and eventListeners.
 
-##Dependencies
+## Dependencies
 None
 
-##License
+## License
 MIT
