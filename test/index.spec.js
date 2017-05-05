@@ -1,6 +1,7 @@
 import should from 'should';
-import TabAccordion from '../dist/storm-tab-accordion';
 import 'jsdom-global/register';
+import TabAccordion from '../dist/storm-tab-accordion.standalone.js';
+
 
 const html = `<div class="js-tab-accordion">
             <nav role="tablist" class="tab-accordion__nav">
