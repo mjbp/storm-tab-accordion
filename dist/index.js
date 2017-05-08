@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 1.1.0: Mon, 08 May 2017 10:45:28 GMT
+ * @version 1.1.1: Mon, 08 May 2017 11:25:23 GMT
  * @author mjbp
  * @license MIT
  */
@@ -12,12 +12,10 @@ const init = (sel, opts) => {
 	
 	if(!els.length) throw new Error('Tab Accordion cannot be initialised, no augmentable elements found');
 
-	return els.map((el) => {
-		return Object.assign(Object.create(componentPrototype), {
+	return els.map((el) => Object.assign(Object.create(componentPrototype), {
 			DOMElement: el,
 			settings: Object.assign({}, defaults, opts)
-		}).init();
-	});
+		}).init());
 };
 
 export default { init };
