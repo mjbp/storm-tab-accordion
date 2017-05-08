@@ -102,6 +102,7 @@ describe('Initialisation', () => {
 	 */
 	it('should attach keydown eventListener to each tab', () => {
 		
+		console.log(TabAccordionSet[0].tabs[0]);
 		//trigger
 		TabAccordionSet[0].tabs[0].dispatchEvent(
 			new window.KeyboardEvent('keydown', { 
@@ -127,7 +128,7 @@ describe('Initialisation', () => {
 
 		TabAccordionSet[0].tabs[0].dispatchEvent(tabDownEvt);
 
-		TabAccordionSet[0].focusableChildren[0].dispatchEvent(tabDownEvt);
+		//TabAccordionSet[0].focusableChildren[0].dispatchEvent(tabDownEvt);
 
 		TabAccordionSet[0].tabs[0].dispatchEvent(
 			new window.KeyboardEvent('keydown', { 

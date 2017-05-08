@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 1.0.1: Fri, 05 May 2017 12:11:06 GMT
+ * @version 1.1.0: Mon, 08 May 2017 10:45:28 GMT
  * @author mjbp
  * @license MIT
  */
@@ -27,8 +27,7 @@ var defaults = {
     tabClass: '.js-tab-accordion-tab',
     titleClass: '.js-tab-accordion-title',
     currentClass: 'active',
-    active: 0,
-    tabCursorEvent: 'click'
+    active: 0
 };
 
 var KEY_CODES = {
@@ -40,27 +39,25 @@ var KEY_CODES = {
     UP: 38,
     DOWN: 40
 };
+var TRIGGER_EVENTS = [window.PointerEvent ? 'pointerdown' : 'ontouchstart' in window ? 'touchstart' : 'click', 'keydown'];
 
 var componentPrototype = {
     init: function init() {
         var _this = this;
 
-        var hash = location.hash.slice(1) || null;
+        var hash = location.hash.slice(1) || false;
+
         this.tabs = [].slice.call(this.DOMElement.querySelectorAll(this.settings.tabClass));
         this.titles = [].slice.call(this.DOMElement.querySelectorAll(this.settings.titleClass));
-
         this.targets = this.tabs.map(function (el) {
             return document.getElementById(el.getAttribute('href').substr(1)) || console.error('Tab target not found');
         });
-
         this.current = this.settings.active;
-        if (hash) {
-            this.targets.forEach(function (target, i) {
-                if (target.getAttribute('id') === hash) {
-                    _this.current = i;
-                }
-            });
-        }
+
+        if (hash !== false) this.targets.forEach(function (target, i) {
+            if (target.getAttribute('id') === hash) _this.current = i;
+        });
+
         this.initAria();
         this.initTitles();
         this.initTabs();
@@ -69,110 +66,102 @@ var componentPrototype = {
         return this;
     },
     initAria: function initAria() {
-        this.tabs.forEach(function (el) {
+        var _this2 = this;
+
+        this.tabs.forEach(function (el, i) {
             el.setAttribute('role', 'tab');
             el.setAttribute('tabIndex', 0);
             el.setAttribute('aria-expanded', false);
             el.setAttribute('aria-selected', false);
             el.setAttribute('aria-controls', el.getAttribute('href') ? el.getAttribute('href').substr(1) : el.parentNode.getAttribute('id'));
-        });
-        this.targets.forEach(function (el) {
-            el.setAttribute('role', 'tabpanel');
-            el.setAttribute('aria-hidden', true);
-            el.setAttribute('tabIndex', '-1');
+            _this2.targets[i].setAttribute('role', 'tabpanel');
+            _this2.targets[i].setAttribute('aria-hidden', true);
+            _this2.targets[i].setAttribute('tabIndex', '-1');
         });
         return this;
     },
     initTitles: function initTitles() {
-        var _this2 = this;
-
-        var handler = function handler(i) {
-            _this2.toggle(i);
-        };
-
-        this.titles.forEach(function (el, i) {
-            el.addEventListener(_this2.settings.tabCursorEvent, function (e) {
-                if (!!e.keyCode && e.keyCode === KEY_CODES.TAB) return;
-
-                if (!e.keyCode || e.keyCode === KEY_CODES.ENTER) {
-                    e.preventDefault();
-                    handler.call(_this2, i);
-                }
-            }, false);
-        });
-
-        return this;
-    },
-    initTabs: function initTabs() {
         var _this3 = this;
 
         var handler = function handler(i) {
             _this3.toggle(i);
         };
 
+        this.titles.forEach(function (el, i) {
+            TRIGGER_EVENTS.forEach(function (ev) {
+                el.addEventListener(ev, function (e) {
+                    if (e.keyCode && e.keyCode === KEY_CODES.TAB) return;
+
+                    if (!e.keyCode || e.keyCode === KEY_CODES.ENTER || e.keyCode === KEY_CODES.SPACE) {
+                        e.preventDefault();
+                        handler.call(_this3, i);
+                    }
+                }, false);
+            });
+        });
+
+        return this;
+    },
+    initTabs: function initTabs() {
+        var _this4 = this;
+
+        var change = function change(id) {
+            _this4.toggle(id);
+            window.setTimeout(function () {
+                _this4.tabs[_this4.current].focus();
+            }, 16);
+        },
+            nextId = function nextId() {
+            return _this4.current === _this4.tabs.length - 1 ? 0 : _this4.current + 1;
+        },
+            previousId = function previousId() {
+            return _this4.current === 0 ? _this4.tabs.length - 1 : _this4.current - 1;
+        };
+
         this.lastFocusedTab = 0;
 
         this.tabs.forEach(function (el, i) {
-            //navigate
             el.addEventListener('keydown', function (e) {
                 switch (e.keyCode) {
                     case KEY_CODES.UP:
                         e.preventDefault();
-                        _this3.toggle(_this3.current === 0 ? _this3.tabs.length - 1 : _this3.current - 1);
-                        window.setTimeout(function () {
-                            _this3.tabs[_this3.current].focus();
-                        }, 16);
+                        change.call(_this4, previousId());
                         break;
                     case KEY_CODES.LEFT:
-                        _this3.toggle(_this3.current === 0 ? _this3.tabs.length - 1 : _this3.current - 1);
-                        window.setTimeout(function () {
-                            _this3.tabs[_this3.current].focus();
-                        }, 16);
+                        change.call(_this4, previousId());
                         break;
                     case KEY_CODES.DOWN:
                         e.preventDefault();
-                        _this3.toggle(_this3.current === _this3.tabs.length - 1 ? 0 : _this3.current + 1);
-                        window.setTimeout(function () {
-                            _this3.tabs[_this3.current].focus();
-                        }, 16);
+                        change.call(_this4, nextId());
                         break;
                     case KEY_CODES.RIGHT:
-                        _this3.toggle(_this3.current === _this3.tabs.length - 1 ? 0 : _this3.current + 1);
-                        window.setTimeout(function () {
-                            _this3.tabs[_this3.current].focus();
-                        }, 16);
+                        change.call(_this4, nextId());
                         break;
                     case KEY_CODES.ENTER:
-                        handler.call(_this3, i);
-                        window.setTimeout(function () {
-                            _this3.tabs[i].focus();
-                        }, 16);
+                        change.call(_this4, i);
                         break;
                     case KEY_CODES.SPACE:
                         e.preventDefault();
-                        _this3.toggle(i);
-                        window.setTimeout(function () {
-                            _this3.tabs[i].focus();
-                        }, 16);
+                        change.call(_this4, i);
                         break;
                     case KEY_CODES.TAB:
+                        if (!_this4.getFocusableChildren(_this4.targets[i]).length) return;
+
                         e.preventDefault();
                         e.stopPropagation();
-                        _this3.lastFocusedTab = _this3.getTabIndex(e.target);
-                        _this3.setTargetFocus(_this3.lastFocusedTab);
-                        handler.call(_this3, i);
+                        _this4.lastFocusedTab = _this4.getLinkIndex(e.target);
+                        _this4.setTargetFocus(_this4.lastFocusedTab);
+                        change.call(_this4, i);
                         break;
                     default:
-                        //
                         break;
                 }
             });
 
-            //toggle
             el.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                handler.call(_this3, i);
+                change.call(_this4, i);
             }, false);
         });
 
@@ -181,8 +170,7 @@ var componentPrototype = {
     getTabIndex: function getTabIndex(link) {
         for (var i = 0; i < this.tabs.length; i++) {
             if (link === this.tabs[i]) return i;
-        }
-        return null;
+        }return null;
     },
     getFocusableChildren: function getFocusableChildren(node) {
         var focusableElements = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabIndex]:not([tabIndex="-1"])'];
@@ -190,6 +178,7 @@ var componentPrototype = {
     },
     setTargetFocus: function setTargetFocus(tabIndex) {
         this.focusableChildren = this.getFocusableChildren(this.targets[tabIndex]);
+        if (!this.focusableChildren.length) return false;
 
         if (this.focusableChildren.length) {
             window.setTimeout(function () {
@@ -224,31 +213,13 @@ var componentPrototype = {
         }
     },
     change: function change(type, i) {
-        var methods = {
-            open: {
-                classlist: 'add',
-                tabIndex: {
-                    target: this.targets[i],
-                    value: '0'
-                }
-            },
-            close: {
-                classlist: 'remove',
-                tabIndex: {
-                    target: this.targets[this.current],
-                    value: '-1'
-                }
-            }
-        };
-
-        this.tabs[i].classList[methods[type].classlist](this.settings.currentClass);
-        this.titles[i].classList[methods[type].classlist](this.settings.currentClass);
-        this.targets[i].classList[methods[type].classlist](this.settings.currentClass);
-
+        this.tabs[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
+        this.titles[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
+        this.targets[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
         this.targets[i].setAttribute('aria-hidden', this.targets[i].getAttribute('aria-hidden') === 'true' ? 'false' : 'true');
         this.tabs[i].setAttribute('aria-selected', this.tabs[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true');
         this.tabs[i].setAttribute('aria-expanded', this.tabs[i].getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
-        methods[type].tabIndex.target.setAttribute('tabIndex', methods[type].tabIndex.value);
+        (type === 'open' ? this.targets[i] : this.targets[this.current]).setAttribute('tabIndex', type === 'open' ? '0' : '-1');
     },
     open: function open(i) {
         this.change('open', i);
@@ -265,11 +236,9 @@ var componentPrototype = {
         }
 
         !!window.history.pushState && window.history.pushState({ URL: this.tabs[i].getAttribute('href') }, '', this.tabs[i].getAttribute('href'));
-        if (this.current === null) {
-            this.open(i);
-            return this;
-        }
-        this.close(this.current).open(i);
+
+        if (this.current === null) this.open(i);else this.close(this.current).open(i);
+
         return this;
     }
 };
