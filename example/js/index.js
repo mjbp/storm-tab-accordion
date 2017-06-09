@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 1.1.1: Mon, 08 May 2017 11:25:23 GMT
+ * @version 1.1.2: Fri, 09 Jun 2017 10:25:24 GMT
  * @author mjbp
  * @license MIT
  */
@@ -14,7 +14,7 @@ const init = (sel, opts) => {
 
 	return els.map((el) => Object.assign(Object.create(componentPrototype), {
 			DOMElement: el,
-			settings: Object.assign({}, defaults, opts)
+			settings: Object.assign({}, defaults, el.dataset, opts)
 		}).init());
 };
 
