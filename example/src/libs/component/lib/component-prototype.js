@@ -97,7 +97,7 @@ export default {
 
                     e.preventDefault();
                     e.stopPropagation();
-                    this.lastFocusedTab = this.getLinkIndex(e.target);
+                    this.lastFocusedTab = this.getTabIndex(e.target);
                     this.setTargetFocus(this.lastFocusedTab);
                     change.call(this, i);
                     break;
@@ -127,13 +127,11 @@ export default {
         this.focusableChildren = this.getFocusableChildren(this.targets[tabIndex]);
         if(!this.focusableChildren.length) return false;
         
-        if(this.focusableChildren.length){
-            window.setTimeout(function(){
-                this.focusableChildren[0].focus();
-                this.keyEventListener = this.keyListener.bind(this);
-                document.addEventListener('keydown', this.keyEventListener);
-            }.bind(this), 0);
-        }
+        window.setTimeout(function(){
+            this.focusableChildren[0].focus();
+            this.keyEventListener = this.keyListener.bind(this);
+            document.addEventListener('keydown', this.keyEventListener);
+        }.bind(this), 0);
     },
     keyListener(e){
         if (e.keyCode !== KEY_CODES.TAB) return;

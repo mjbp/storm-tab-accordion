@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 1.1.2: Fri, 09 Jun 2017 10:25:25 GMT
+ * @version 1.2.0: Fri, 16 Jun 2017 12:05:38 GMT
  * @author mjbp
  * @license MIT
  */
@@ -149,7 +149,7 @@ var componentPrototype = {
 
                         e.preventDefault();
                         e.stopPropagation();
-                        _this4.lastFocusedTab = _this4.getLinkIndex(e.target);
+                        _this4.lastFocusedTab = _this4.getTabIndex(e.target);
                         _this4.setTargetFocus(_this4.lastFocusedTab);
                         change.call(_this4, i);
                         break;
@@ -180,13 +180,11 @@ var componentPrototype = {
         this.focusableChildren = this.getFocusableChildren(this.targets[tabIndex]);
         if (!this.focusableChildren.length) return false;
 
-        if (this.focusableChildren.length) {
-            window.setTimeout(function () {
-                this.focusableChildren[0].focus();
-                this.keyEventListener = this.keyListener.bind(this);
-                document.addEventListener('keydown', this.keyEventListener);
-            }.bind(this), 0);
-        }
+        window.setTimeout(function () {
+            this.focusableChildren[0].focus();
+            this.keyEventListener = this.keyListener.bind(this);
+            document.addEventListener('keydown', this.keyEventListener);
+        }.bind(this), 0);
     },
     keyListener: function keyListener(e) {
         if (e.keyCode !== KEY_CODES.TAB) return;

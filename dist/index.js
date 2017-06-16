@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 1.1.2: Fri, 09 Jun 2017 10:25:24 GMT
+ * @version 1.2.0: Fri, 16 Jun 2017 12:05:38 GMT
  * @author mjbp
  * @license MIT
  */

@@ -19,17 +19,17 @@ HTML
         <a class="js-tab-accordion-tab" href="#target-2">Item 2</a>
         <a class="js-tab-accordion-tab" href="#target-3">Item 3</a>
     </nav>
-    <section id="target-1" class="tab-accordion-target">
-        <h1 class="js-tab-accordion-title">Item 1</h1>
-        <div class="tab-accordion__inner">One</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 1</h1>
+        <div id="target-1" class="tab-accordion__inner">One</div>
     </section>
-    <section id="target-2" class="tab-accordion-target">
-        <h1 class="js-tab-accordion-title">Item 2</h1>
-        <div class="tab-accordion__inner">Two</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 2</h1>
+        <div id="target-2" class="tab-accordion__inner">Two</div>
     </section>
-    <section id="target-3" class="tab-accordion-target">
-        <h1 class="js-tab-accordion-title">Item 3</h1>
-        <div class="tab-accordion__inner">Three</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 3</h1>
+        <div id="target-3" class="tab-accordion__inner">Three</div>
     </section>
 </div>
 ```
@@ -66,10 +66,10 @@ Sample minimum CSS required to show/hide each section
     clip: rect(0, 0, 0, 0);
     visibility: hidden;
 }
-.tab-accordion__section.active  .tab-accordion__title {
+.tab-accordion__title.active {
     background-color:#eee;
 }
-.tab-accordion__section.active .tab-accordion__inner {
+.tab-accordion__inner.active {
     position: relative;
     clip:auto;
     padding:2rem;
@@ -84,11 +84,6 @@ Sample minimum CSS required to show/hide each section
     .tab-accordion__nav {
         display:block;
         overflow: hidden;
-    }
-    .tab-accordion__section {
-        position: absolute;
-        clip: rect(0, 0, 0, 0);
-        visibility: hidden;
     }
     .tab-accordion__section.active {
         position: relative;
@@ -107,7 +102,7 @@ Sample minimum CSS required to show/hide each section
     overflow:hidden;
     clear:both;
 }
-.tab-accordion__section.active .tab-accordion__inner {
+.tab-accordion__inner.active {
     max-height:10000px;
 }
 ```
