@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 1.2.0: Fri, 16 Jun 2017 12:05:38 GMT
+ * @version 1.2.1: Tue, 12 Sep 2017 14:00:53 GMT
  * @author mjbp
  * @license MIT
  */
@@ -145,13 +145,12 @@ var componentPrototype = {
                         change.call(_this4, i);
                         break;
                     case KEY_CODES.TAB:
-                        if (!_this4.getFocusableChildren(_this4.targets[i]).length) return;
+                        if (!_this4.getFocusableChildren(_this4.targets[i]).length || _this4.current !== i) return;
 
                         e.preventDefault();
                         e.stopPropagation();
                         _this4.lastFocusedTab = _this4.getTabIndex(e.target);
                         _this4.setTargetFocus(_this4.lastFocusedTab);
-                        change.call(_this4, i);
                         break;
                     default:
                         break;

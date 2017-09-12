@@ -93,13 +93,12 @@ export default {
                     change.call(this, i);
                     break;
                 case KEY_CODES.TAB:
-                    if(!this.getFocusableChildren(this.targets[i]).length) return;
+                if(!this.getFocusableChildren(this.targets[i]).length || this.current !== i) return;
 
                     e.preventDefault();
                     e.stopPropagation();
                     this.lastFocusedTab = this.getTabIndex(e.target);
                     this.setTargetFocus(this.lastFocusedTab);
-                    change.call(this, i);
                     break;
                 default:
                     break;
