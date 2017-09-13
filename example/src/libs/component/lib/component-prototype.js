@@ -93,7 +93,7 @@ export default {
                     change.call(this, i);
                     break;
                 case KEY_CODES.TAB:
-                if(!this.getFocusableChildren(this.targets[i]).length || this.current !== i) return;
+                if(!this.getFocusableChildren(this.targets[i]).length || this.current !== i || e.shiftKey) return;
 
                     e.preventDefault();
                     e.stopPropagation();
@@ -143,8 +143,10 @@ export default {
         }
         
         if(e.shiftKey && focusedIndex === 0) {
-            e.preventDefault();
-            this.focusableChildren[this.focusableChildren.length - 1].focus();
+            if(this.lastFocusedTab !== 0) {
+                e.preventDefault();
+                this.tabs[this.lastFocusedTab].focus();
+            }
         } else {
             if(!e.shiftKey && focusedIndex === this.focusableChildren.length - 1) {
                 document.removeEventListener('keydown', this.keyEventListener);
