@@ -55,26 +55,19 @@ Load('/content/js/async/storm-tab-accordion.standalone.js')
 ```
 
 CSS
-Sample minimum CSS required to show/hide each section
+Example CSS
 
 ```
 .tab-accordion__nav {
     display:none;
 }
-.tab-accordion__inner {
-    position: absolute;
-    clip: rect(0, 0, 0, 0);
-    visibility: hidden;
-}
 .tab-accordion__title.active {
     background-color:#eee;
 }
-.tab-accordion__inner.active {
+.tab-accordion__inner {
     position: relative;
-    clip:auto;
     padding:2rem;
     background-color:#eee;
-    visibility: visible;
 }
 
 @media(min-width:768px){
@@ -86,24 +79,8 @@ Sample minimum CSS required to show/hide each section
         overflow: hidden;
     }
     .tab-accordion__section.active {
-        position: relative;
-        clip:auto;
-        padding:2rem;
-        background:#eee;
-        visibility: visible;
-    }
-    .tab-accordion__section.active .tab-accordion__inner {
         background:#eee;
     }
-}
-
-.tab-accordion__inner {
-    max-height:0;
-    overflow:hidden;
-    clear:both;
-}
-.tab-accordion__inner.active {
-    max-height:10000px;
 }
 ```
 

@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Tab and accordion ui component for multi-panelled content areas
- * @version 1.2.2: Tue, 12 Sep 2017 16:53:04 GMT
+ * @version 1.2.3: Mon, 09 Oct 2017 11:11:35 GMT
  * @author mjbp
  * @license MIT
  */
@@ -36,10 +36,9 @@ var KEY_CODES = {
     TAB: 9,
     LEFT: 37,
     RIGHT: 39,
-    UP: 38,
     DOWN: 40
 };
-var TRIGGER_EVENTS = [window.PointerEvent ? 'pointerdown' : 'ontouchstart' in window ? 'touchstart' : 'click', 'keydown'];
+var TRIGGER_EVENTS = ['ontouchstart' in window ? 'touchstart' : 'click', 'keydown'];
 
 var componentPrototype = {
     init: function init() {
@@ -49,34 +48,35 @@ var componentPrototype = {
 
         this.tabs = [].slice.call(this.DOMElement.querySelectorAll(this.settings.tabClass));
         this.titles = [].slice.call(this.DOMElement.querySelectorAll(this.settings.titleClass));
-        this.targets = this.tabs.map(function (el) {
+        this.panels = this.tabs.map(function (el) {
             return document.getElementById(el.getAttribute('href').substr(1)) || console.error('Tab target not found');
         });
         this.current = this.settings.active;
 
-        if (hash !== false) this.targets.forEach(function (target, i) {
+        if (hash !== false) this.panels.forEach(function (target, i) {
             if (target.getAttribute('id') === hash) _this.current = i;
         });
 
-        this.initAria();
+        this.initAttributes();
         this.initTitles();
         this.initTabs();
         this.open(this.current);
 
         return this;
     },
-    initAria: function initAria() {
+    initAttributes: function initAttributes() {
         var _this2 = this;
 
-        this.tabs.forEach(function (el, i) {
-            el.setAttribute('role', 'tab');
-            el.setAttribute('tabIndex', 0);
-            el.setAttribute('aria-expanded', false);
-            el.setAttribute('aria-selected', false);
-            el.setAttribute('aria-controls', el.getAttribute('href') ? el.getAttribute('href').substr(1) : el.parentNode.getAttribute('id'));
-            _this2.targets[i].setAttribute('role', 'tabpanel');
-            _this2.targets[i].setAttribute('aria-hidden', true);
-            _this2.targets[i].setAttribute('tabIndex', '-1');
+        this.tabs.forEach(function (tab, i) {
+            tab.setAttribute('role', 'tab');
+            tab.setAttribute('tabindex', 0);
+            tab.setAttribute('aria-selected', false);
+            tab.setAttribute('tabindex', '-1');
+            _this2.panels[i].setAttribute('role', 'tabpanel');
+            _this2.panels[i].setAttribute('hidden', 'hidden');
+            _this2.panels[i].setAttribute('tabindex', '-1');
+            if (!_this2.panels[i].firstElementChild || _this2.panels[i].firstElementChild.hasAttribute('tabindex')) return;
+            _this2.panels[i].firstElementChild.setAttribute('tabindex', '-1');
         });
         return this;
     },
@@ -118,21 +118,16 @@ var componentPrototype = {
             return _this4.current === 0 ? _this4.tabs.length - 1 : _this4.current - 1;
         };
 
-        this.lastFocusedTab = 0;
-
         this.tabs.forEach(function (el, i) {
             el.addEventListener('keydown', function (e) {
                 switch (e.keyCode) {
-                    case KEY_CODES.UP:
-                        e.preventDefault();
-                        change.call(_this4, previousId());
-                        break;
                     case KEY_CODES.LEFT:
                         change.call(_this4, previousId());
                         break;
                     case KEY_CODES.DOWN:
                         e.preventDefault();
-                        change.call(_this4, nextId());
+                        e.stopPropagation();
+                        _this4.panels[i].focus();
                         break;
                     case KEY_CODES.RIGHT:
                         change.call(_this4, nextId());
@@ -143,14 +138,6 @@ var componentPrototype = {
                     case KEY_CODES.SPACE:
                         e.preventDefault();
                         change.call(_this4, i);
-                        break;
-                    case KEY_CODES.TAB:
-                        if (!_this4.getFocusableChildren(_this4.targets[i]).length || _this4.current !== i || e.shiftKey) return;
-
-                        e.preventDefault();
-                        e.stopPropagation();
-                        _this4.lastFocusedTab = _this4.getTabIndex(e.target);
-                        _this4.setTargetFocus(_this4.lastFocusedTab);
                         break;
                     default:
                         break;
@@ -166,59 +153,14 @@ var componentPrototype = {
 
         return this;
     },
-    getTabIndex: function getTabIndex(link) {
-        for (var i = 0; i < this.tabs.length; i++) {
-            if (link === this.tabs[i]) return i;
-        }return null;
-    },
-    getFocusableChildren: function getFocusableChildren(node) {
-        var focusableElements = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabIndex]:not([tabIndex="-1"])'];
-        return [].slice.call(node.querySelectorAll(focusableElements.join(',')));
-    },
-    setTargetFocus: function setTargetFocus(tabIndex) {
-        this.focusableChildren = this.getFocusableChildren(this.targets[tabIndex]);
-        if (!this.focusableChildren.length) return false;
-
-        window.setTimeout(function () {
-            this.focusableChildren[0].focus();
-            this.keyEventListener = this.keyListener.bind(this);
-            document.addEventListener('keydown', this.keyEventListener);
-        }.bind(this), 0);
-    },
-    keyListener: function keyListener(e) {
-        if (e.keyCode !== KEY_CODES.TAB) return;
-
-        var focusedIndex = this.focusableChildren.indexOf(document.activeElement);
-
-        if (focusedIndex < 0) {
-            document.removeEventListener('keydown', this.keyEventListener);
-            return;
-        }
-
-        if (e.shiftKey && focusedIndex === 0) {
-            if (this.lastFocusedTab !== 0) {
-                e.preventDefault();
-                this.tabs[this.lastFocusedTab].focus();
-            }
-        } else {
-            if (!e.shiftKey && focusedIndex === this.focusableChildren.length - 1) {
-                document.removeEventListener('keydown', this.keyEventListener);
-                if (this.lastFocusedTab !== this.tabs.length - 1) {
-                    e.preventDefault();
-                    this.lastFocusedTab = this.lastFocusedTab + 1;
-                    this.tabs[this.lastFocusedTab].focus();
-                }
-            }
-        }
-    },
     change: function change(type, i) {
         this.tabs[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
         this.titles[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
-        this.targets[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
-        this.targets[i].setAttribute('aria-hidden', this.targets[i].getAttribute('aria-hidden') === 'true' ? 'false' : 'true');
+        this.panels[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
+        type === 'open' ? this.panels[i].removeAttribute('hidden') : this.panels[i].setAttribute('hidden', 'hidden');
         this.tabs[i].setAttribute('aria-selected', this.tabs[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true');
-        this.tabs[i].setAttribute('aria-expanded', this.tabs[i].getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
-        (type === 'open' ? this.targets[i] : this.targets[this.current]).setAttribute('tabIndex', type === 'open' ? '0' : '-1');
+        (type === 'open' ? this.tabs[i] : this.tabs[this.current]).setAttribute('tabindex', type === 'open' ? '0' : '-1');
+        (type === 'open' ? this.panels[i] : this.panels[this.current]).setAttribute('tabindex', type === 'open' ? '0' : '-1');
     },
     open: function open(i) {
         this.change('open', i);

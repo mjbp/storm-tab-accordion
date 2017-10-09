@@ -4,10 +4,9 @@ const KEY_CODES = {
             TAB: 9,
             LEFT: 37,
             RIGHT: 39,
-            UP:38,
             DOWN: 40
         },
-        TRIGGER_EVENTS = [window.PointerEvent ? 'pointerdown' : 'ontouchstart' in window ? 'touchstart' : 'click', 'keydown' ];
+        TRIGGER_EVENTS = ['ontouchstart' in window ? 'touchstart' : 'click', 'keydown' ];
 
 export default {
     init() {
@@ -15,28 +14,29 @@ export default {
 
         this.tabs = [].slice.call(this.DOMElement.querySelectorAll(this.settings.tabClass));
         this.titles = [].slice.call(this.DOMElement.querySelectorAll(this.settings.titleClass));
-        this.targets = this.tabs.map(el => document.getElementById(el.getAttribute('href').substr(1)) || console.error('Tab target not found'));
+        this.panels = this.tabs.map(el => document.getElementById(el.getAttribute('href').substr(1)) || console.error('Tab target not found'));
         this.current = this.settings.active;
 
-        if(hash !== false) this.targets.forEach((target, i) => { if (target.getAttribute('id') === hash) this.current = i; });
+        if(hash !== false) this.panels.forEach((target, i) => { if (target.getAttribute('id') === hash) this.current = i; });
 
-        this.initAria();
+        this.initAttributes();
         this.initTitles();
         this.initTabs();
         this.open(this.current);
 
         return this;
     },
-    initAria() {
-        this.tabs.forEach((el, i) => {
-            el.setAttribute('role', 'tab');
-            el.setAttribute('tabIndex', 0);
-            el.setAttribute('aria-expanded', false);
-            el.setAttribute('aria-selected', false);
-            el.setAttribute('aria-controls', el.getAttribute('href') ? el.getAttribute('href').substr(1) : el.parentNode.getAttribute('id'));
-            this.targets[i].setAttribute('role', 'tabpanel');
-            this.targets[i].setAttribute('aria-hidden', true);
-            this.targets[i].setAttribute('tabIndex', '-1');
+    initAttributes() {
+        this.tabs.forEach((tab, i) => {
+            tab.setAttribute('role', 'tab');
+            tab.setAttribute('tabindex', 0);
+            tab.setAttribute('aria-selected', false);
+            tab.setAttribute('tabindex', '-1');
+            this.panels[i].setAttribute('role', 'tabpanel');
+            this.panels[i].setAttribute('hidden', 'hidden');
+            this.panels[i].setAttribute('tabindex', '-1');
+            if(!this.panels[i].firstElementChild || this.panels[i].firstElementChild.hasAttribute('tabindex')) return;
+            this.panels[i].firstElementChild.setAttribute('tabindex', '-1');
         });
         return this;
     },
@@ -66,21 +66,16 @@ export default {
             nextId = () => (this.current === this.tabs.length - 1 ? 0 : this.current + 1),
             previousId = () => (this.current === 0 ? this.tabs.length - 1 : this.current - 1);
 
-        this.lastFocusedTab = 0;
-
         this.tabs.forEach((el, i) => {
             el.addEventListener('keydown', e => {
                 switch (e.keyCode) {
-                case KEY_CODES.UP:
-                    e.preventDefault();
-                    change.call(this, previousId());
-                    break;
                 case KEY_CODES.LEFT:
                     change.call(this, previousId());
                     break;
                 case KEY_CODES.DOWN:
                     e.preventDefault();
-                    change.call(this, nextId());
+                    e.stopPropagation();
+                    this.panels[i].focus();
                     break;
                 case KEY_CODES.RIGHT:
                     change.call(this, nextId());
@@ -91,14 +86,6 @@ export default {
                 case KEY_CODES.SPACE:
                     e.preventDefault();
                     change.call(this, i);
-                    break;
-                case KEY_CODES.TAB:
-                if(!this.getFocusableChildren(this.targets[i]).length || this.current !== i || e.shiftKey) return;
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.lastFocusedTab = this.getTabIndex(e.target);
-                    this.setTargetFocus(this.lastFocusedTab);
                     break;
                 default:
                     break;
@@ -114,59 +101,14 @@ export default {
 
         return this;
     },
-    getTabIndex(link){
-        for(let i = 0; i < this.tabs.length; i++) if(link === this.tabs[i]) return i;
-        return null;
-    },
-    getFocusableChildren(node) {
-        let focusableElements = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabIndex]:not([tabIndex="-1"])'];
-        return [].slice.call(node.querySelectorAll(focusableElements.join(',')));
-    },
-    setTargetFocus(tabIndex){
-        this.focusableChildren = this.getFocusableChildren(this.targets[tabIndex]);
-        if(!this.focusableChildren.length) return false;
-        
-        window.setTimeout(function(){
-            this.focusableChildren[0].focus();
-            this.keyEventListener = this.keyListener.bind(this);
-            document.addEventListener('keydown', this.keyEventListener);
-        }.bind(this), 0);
-    },
-    keyListener(e){
-        if (e.keyCode !== KEY_CODES.TAB) return;
-        
-        let focusedIndex = this.focusableChildren.indexOf(document.activeElement);
-        
-        if(focusedIndex < 0) {
-            document.removeEventListener('keydown', this.keyEventListener);
-            return;
-        }
-        
-        if(e.shiftKey && focusedIndex === 0) {
-            if(this.lastFocusedTab !== 0) {
-                e.preventDefault();
-                this.tabs[this.lastFocusedTab].focus();
-            }
-        } else {
-            if(!e.shiftKey && focusedIndex === this.focusableChildren.length - 1) {
-                document.removeEventListener('keydown', this.keyEventListener);
-                if(this.lastFocusedTab !== this.tabs.length - 1) {
-                    e.preventDefault();
-                    this.lastFocusedTab = this.lastFocusedTab + 1;
-                    this.tabs[this.lastFocusedTab].focus();
-                }
-                
-            }
-        }
-    },
     change(type, i) {
         this.tabs[i].classList[(type === 'open' ? 'add' : 'remove')](this.settings.currentClass);
         this.titles[i].classList[(type === 'open' ? 'add' : 'remove')](this.settings.currentClass);
-        this.targets[i].classList[(type === 'open' ? 'add' : 'remove')](this.settings.currentClass);
-        this.targets[i].setAttribute('aria-hidden', this.targets[i].getAttribute('aria-hidden') === 'true' ? 'false' : 'true' );
+        this.panels[i].classList[(type === 'open' ? 'add' : 'remove')](this.settings.currentClass);
+        type === 'open' ? this.panels[i].removeAttribute('hidden') : this.panels[i].setAttribute('hidden', 'hidden');
         this.tabs[i].setAttribute('aria-selected', this.tabs[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true' );
-        this.tabs[i].setAttribute('aria-expanded', this.tabs[i].getAttribute('aria-expanded') === 'true' ? 'false' : 'true' );
-        (type === 'open' ? this.targets[i] : this.targets[this.current]).setAttribute('tabIndex', (type === 'open' ? '0' : '-1'));
+        (type === 'open' ? this.tabs[i] : this.tabs[this.current]).setAttribute('tabindex', (type === 'open' ? '0' : '-1'));
+        (type === 'open' ? this.panels[i] : this.panels[this.current]).setAttribute('tabindex', (type === 'open' ? '0' : '-1'));
     },
     open(i) {
         this.change('open', i);

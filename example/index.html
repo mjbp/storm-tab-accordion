@@ -103,20 +103,13 @@
         .tab-accordion__nav {
             display:none;
         }
-        .tab-accordion__inner {
-            position: absolute;
-            clip: rect(0, 0, 0, 0);
-            visibility: hidden;
-        }
         .tab-accordion__title.active {
             background-color:#eee;
         }
-        .tab-accordion__inner.active {
+        .tab-accordion__inner {
             position: relative;
-            clip:auto;
             padding:2rem;
             background-color:#eee;
-            visibility: visible;
         }
 
         @media(min-width:768px){
@@ -127,25 +120,6 @@
                 display:block;
                 overflow: hidden;
             }
-            .tab-accordion__section.active {
-                position: relative;
-                clip:auto;
-                padding:2rem;
-                background:#eee;
-                visibility: visible;
-            }
-            .tab-accordion__section.active .tab-accordion__inner {
-                background:#eee;
-            }
-        }
-
-        .tab-accordion__inner {
-            max-height:0;
-            overflow:hidden;
-            clear:both;
-        }
-        .tab-accordion__inner.active {
-            max-height:10000px;
         }
     </style>
 </head>
@@ -234,56 +208,6 @@
         <div id="target-5" class="tab-accordion__inner">Five</div>
     </section>
 </div></script></code></pre>
-    <h3>CSS</h3>
-    <p>Sample minimum CSS required to show/hide each section</p>
-    <pre><code class="language-css"><script type="prism-html-markup">
-.tab-accordion__nav {
-    display:none;
-}
-.tab-accordion__inner {
-    position: absolute;
-    clip: rect(0, 0, 0, 0);
-    visibility: hidden;
-}
-.tab-accordion__title.active {
-    background-color:#eee;
-}
-.tab-accordion__inner.active {
-    position: relative;
-    clip:auto;
-    padding:2rem;
-    background-color:#eee;
-    visibility: visible;
-}
-
-@media(min-width:768px){
-    .tab-accordion__title {
-        display:none;
-    }
-    .tab-accordion__nav {
-        display:block;
-        overflow: hidden;
-    }
-    .tab-accordion__section.active {
-        position: relative;
-        clip:auto;
-        padding:2rem;
-        background:#eee;
-        visibility: visible;
-    }
-    .tab-accordion__section.active .tab-accordion__inner {
-        background:#eee;
-    }
-}
-
-.tab-accordion__inner {
-    max-height:0;
-    overflow:hidden;
-    clear:both;
-}
-.tab-accordion__inner.active {
-    max-height:10000px;
-}</script></code></pre>
         <h3>JS</h3>
         <p>Either import and initialise using a named import:</p>
         <pre><code class="language-js">import TabAccordion from 'storm-tab-accordion';
