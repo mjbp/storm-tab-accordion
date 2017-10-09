@@ -68,10 +68,14 @@ describe('Initialisation', () => {
 		TabAccordionSet[0].should.have.property('DOMElement');
 		TabAccordionSet[0].should.have.property('settings').Object();
 		TabAccordionSet[0].should.have.property('init').Function();
-		TabAccordionSet[0].should.have.property('initAria').Function();
+		TabAccordionSet[0].should.have.property('initAttributes').Function();
 		TabAccordionSet[0].should.have.property('initTitles').Function();
-    
-	});
+		TabAccordionSet[0].should.have.property('initTabs').Function();
+		TabAccordionSet[0].should.have.property('change').Function();
+		TabAccordionSet[0].should.have.property('open').Function();
+		TabAccordionSet[0].should.have.property('close').Function();
+		TabAccordionSet[0].should.have.property('toggle').Function();
+    });
 
 
 	it('should initialisation with different settings if different options are passed', () => {
@@ -81,19 +85,19 @@ describe('Initialisation', () => {
 	it('should attach the handleClick eventListener to each tab click event to toggle documentElement className', () => {
 		TabAccordionSet[0].tabs[0].click();
 		Array.from(TabAccordionSet[0].tabs[0].classList).should.containEql('active');
-		Array.from(TabAccordionSet[0].targets[0].classList).should.containEql('active');
+		Array.from(TabAccordionSet[0].panels[0].classList).should.containEql('active');
 		TabAccordionSet[0].tabs[1].click();
 		Array.from(TabAccordionSet[0].tabs[0].classList).should.not.containEql('active');
-		Array.from(TabAccordionSet[0].targets[0].classList).should.not.containEql('active');
+		Array.from(TabAccordionSet[0].panels[0].classList).should.not.containEql('active');
 	});
 
 	it('should attach the handleClick eventListener to each title click event to toggle documentElement className', () => {
 		TabAccordionSet[0].titles[0].click();
 		Array.from(TabAccordionSet[0].titles[0].classList).should.containEql('active');
-		Array.from(TabAccordionSet[0].targets[0].classList).should.containEql('active');
+		Array.from(TabAccordionSet[0].panels[0].classList).should.containEql('active');
 		TabAccordionSet[0].titles[1].click();
 		Array.from(TabAccordionSet[0].titles[0].classList).should.not.containEql('active');
-		Array.from(TabAccordionSet[0].targets[0].classList).should.not.containEql('active');
+		Array.from(TabAccordionSet[0].panels[0].classList).should.not.containEql('active');
 	});
 	
 
