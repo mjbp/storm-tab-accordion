@@ -1,4 +1,4 @@
-import TabAccordion from './libs/storm-tab-accordion';
+import TabAccordion from './libs/component';
 
 const onDOMContentLoadedTasks = [() => {
 	TabAccordion.init('.js-tab-accordion');

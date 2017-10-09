@@ -22,6 +22,9 @@
             box-sizing:border-box;
             font-family: sans-serif;
         }
+        *:focus {
+            outline:1px solid red;
+        }
         html,
         body {
             height:100%;
@@ -100,20 +103,13 @@
         .tab-accordion__nav {
             display:none;
         }
-        .tab-accordion__inner {
-            position: absolute;
-            clip: rect(0, 0, 0, 0);
-            visibility: hidden;
-        }
-        .tab-accordion__section.active  .tab-accordion__title {
+        .tab-accordion__title.active {
             background-color:#eee;
         }
-        .tab-accordion__section.active .tab-accordion__inner {
+        .tab-accordion__inner {
             position: relative;
-            clip:auto;
             padding:2rem;
             background-color:#eee;
-            visibility: visible;
         }
 
         @media(min-width:768px){
@@ -124,30 +120,6 @@
                 display:block;
                 overflow: hidden;
             }
-            .tab-accordion__section {
-                position: absolute;
-                clip: rect(0, 0, 0, 0);
-                visibility: hidden;
-            }
-            .tab-accordion__section.active {
-                position: relative;
-                clip:auto;
-                padding:2rem;
-                background:#eee;
-                visibility: visible;
-            }
-            .tab-accordion__section.active .tab-accordion__inner {
-                background:#eee;
-            }
-        }
-
-        .tab-accordion__inner {
-            max-height:0;
-            overflow:hidden;
-            clear:both;
-        }
-        .tab-accordion__section.active .tab-accordion__inner {
-            max-height:10000px;
         }
     </style>
 </head>
@@ -173,25 +145,33 @@
                 <a class="js-tab-accordion-tab tab-accordion__nav-link" href="#target-4">Item 4</a>
                 <a class="js-tab-accordion-tab tab-accordion__nav-link" href="#target-5">Item 5</a>
             </nav>
-            <section id="target-1" class="tab-accordion__section">
-                <h1 class="js-tab-accordion-title tab-accordion__title">Item 1</h1>
-                <div class="tab-accordion__inner">One</div>
+            <section class="tab-accordion__section">
+                <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 1</h1>
+                <div id="target-1" class="tab-accordion__inner">One</div>
             </section>
-            <section id="target-2" class="tab-accordion__section">
-                <h1 class="js-tab-accordion-title tab-accordion__title">Item 2</h1>
-                <div class="tab-accordion__inner">Two</div>
+            <section class="tab-accordion__section">
+                <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 2</h1>
+                <div id="target-2" class="tab-accordion__inner">
+                    <p>Tab 2</p>
+                    <p><a href="/">Test link</a></p>
+                    <p><a href="/">Test link</a></p>
+                </div>
             </section>
-            <section id="target-3" class="tab-accordion__section">
-                <h1 class="js-tab-accordion-title tab-accordion__title">Item 3</h1>
-                <div class="tab-accordion__inner">Three</div>
+            <section class="tab-accordion__section">
+                <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 3</h1>
+                <div id="target-3" class="tab-accordion__inner">
+                    <p>Tab 3</p>
+                    <p><a href="/">Test link</a></p>
+                    <p><a href="/">Test link</a></p>
+                </div>
             </section>
-            <section id="target-4" class="tab-accordion__section">
-                <h1 class="js-tab-accordion-title tab-accordion__title">Item 4</h1>
-                <div class="tab-accordion__inner">Four</div>
+            <section class="tab-accordion__section">
+                <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 4</h1>
+                <div id="target-4" class="tab-accordion__inner">Four</div>
             </section>
-            <section id="target-5" class="tab-accordion__section">
-                <h1 class="js-tab-accordion-title tab-accordion__title">Item 5</h1>
-                <div class="tab-accordion__inner">Five</div>
+            <section class="tab-accordion__section">
+                <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 5</h1>
+                <div id="target-5" class="tab-accordion__inner">Five</div>
             </section>
         </div>
         <hr>
@@ -207,81 +187,27 @@
         <a class="js-tab-accordion-tab" href="#target-4">Item 4</a>
         <a class="js-tab-accordion-tab" href="#target-5">Item 5</a>
     </nav>
-    <section id="target-1" class="tab-accordion__section">
-        <h1 class="js-tab-accordion-title tab-accordion__title">Item 1</h1>
-        <div class="tab-accordion__inner">One</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 1</h1>
+        <div id="target-1" class="tab-accordion__inner">One</div>
     </section>
-    <section id="target-2" class="tab-accordion__section">
-        <h1 class="js-tab-accordion-title tab-accordion__title">Item 2</h1>
-        <div class="tab-accordion__inner">Two</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 2</h1>
+        <div id="target-2" class="tab-accordion__inner">Two</div>
     </section>
-    <section id="target-3" class="tab-accordion__section">
-        <h1 class="js-tab-accordion-title tab-accordion__title">Item 3</h1>
-        <div class="tab-accordion__inner">Three</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 3</h1>
+        <div id="target-3" class="tab-accordion__inner">Three</div>
     </section>
-    <section id="target-4" class="tab-accordion__section">
-        <h1 class="js-tab-accordion-title tab-accordion__title">Item 4</h1>
-        <div class="tab-accordion__inner">Four</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 4</h1>
+        <div id="target-4" class="tab-accordion__inner">Four</div>
     </section>
-    <section id="target-5" class="tab-accordion__section">
-        <h1 class="js-tab-accordion-title tab-accordion__title">Item 5</h1>
-        <div class="tab-accordion__inner">Five</div>
+    <section class="tab-accordion__section">
+        <h1 tabindex="0" class="js-tab-accordion-title tab-accordion__title">Item 5</h1>
+        <div id="target-5" class="tab-accordion__inner">Five</div>
     </section>
 </div></script></code></pre>
-    <h3>CSS</h3>
-    <p>Sample minimum CSS required to show/hide each section</p>
-    <pre><code class="language-css"><script type="prism-html-markup">.tab-accordion__nav {
-    display:none;
-}
-.tab-accordion__inner {
-    position: absolute;
-    clip: rect(0, 0, 0, 0);
-    visibility: hidden;
-}
-.tab-accordion__section.active  .tab-accordion__title {
-    background-color:#eee;
-}
-.tab-accordion__section.active .tab-accordion__inner {
-    position: relative;
-    clip:auto;
-    padding:2rem;
-    background-color:#eee;
-    visibility: visible;
-}
-
-@media(min-width:768px){
-    .tab-accordion__title {
-        display:none;
-    }
-    .tab-accordion__nav {
-        display:block;
-        overflow: hidden;
-    }
-    .tab-accordion__section {
-        position: absolute;
-        clip: rect(0, 0, 0, 0);
-        visibility: hidden;
-    }
-    .tab-accordion__section.active {
-        position: relative;
-        clip:auto;
-        padding:2rem;
-        background:#eee;
-        visibility: visible;
-    }
-    .tab-accordion__section.active .tab-accordion__inner {
-        background:#eee;
-    }
-}
-
-.tab-accordion__inner {
-    max-height:0;
-    overflow:hidden;
-    clear:both;
-}
-.tab-accordion__section.active .tab-accordion__inner {
-    max-height:10000px;
-}</script></code></pre>
         <h3>JS</h3>
         <p>Either import and initialise using a named import:</p>
         <pre><code class="language-js">import TabAccordion from 'storm-tab-accordion';
