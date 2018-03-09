@@ -102,7 +102,8 @@ describe('Initialisation', () => {
 	
 
 	/*
-	 * Write what we expect for each of th keyboard interactions
+	 * Missing adequate UI tests
+	 * Write what we expect for each of the keyboard interactions
 	 */
 	it('should attach keydown eventListener to each tab', () => {
 		

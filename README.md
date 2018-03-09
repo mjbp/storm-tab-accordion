@@ -1,14 +1,11 @@
 # Storm Tab Accordion
 
-[![Build Status](https://travis-ci.org/mjbp/storm-tab-accordion.svg?branch=master)](https://travis-ci.org/mjbp/storm-tab-accordion)
-[![codecov.io](http://codecov.io/github/mjbp/storm-tab-accordion/coverage.svg?branch=master)](http://codecov.io/github/mjbp/storm-tab-accordion?branch=master)
 [![npm version](https://badge.fury.io/js/storm-tab-accordion.svg)](https://badge.fury.io/js/storm-tab-accordion)
 
-Tab and accordion ui component for multi-panelled content areas 
-
+Accessible tab and accordion ui component for multi-panelled content areas.
 
 ## Example
-[https://mjbp.github.io/storm-tab-accordion](https://mjbp.github.io/storm-tab-accordion)
+[https://stormid.github.io/storm-tab-accordion](https://stormid.github.io/storm-tab-accordion)
 
 ## Usage
 HTML
@@ -99,7 +96,6 @@ e.g.
 TabAccordion.init('.js-tab-accordion');
 ```
 
-
 ## Tests
 ```
 npm run test
@@ -108,7 +104,7 @@ npm run test
 ## Browser support
 This is module has both es6 and es5 distributions. The es6 version should be used in a workflow that transpiles.
 
-This module depends upon Object.assign, element.classList, and Promises, available in all evergreen browsers. ie9+ is supported with polyfills, ie8+ will work with even more polyfills for Array functions and eventListeners.
+This module depends upon Object.assign available in all evergreen browsers. ie9+ is supported with polyfills, ie8+ will work with even more polyfills for Array functions and eventListeners.
 
 ## Dependencies
 None
