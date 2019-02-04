@@ -35,6 +35,8 @@ export default {
             this.panels[i].setAttribute('role', 'tabpanel');
             this.panels[i].setAttribute('hidden', 'hidden');
             this.panels[i].setAttribute('tabindex', '-1');
+            this.titles[i].setAttribute('aria-selected', false);
+            this.titles[i].setAttribute('aria-controls', this.panels[i].getAttribute('id'));
             if(!this.panels[i].firstElementChild || this.panels[i].firstElementChild.hasAttribute('tabindex')) return;
             this.panels[i].firstElementChild.setAttribute('tabindex', '-1');
         });
@@ -107,6 +109,7 @@ export default {
         this.panels[i].classList[(type === 'open' ? 'add' : 'remove')](this.settings.currentClass);
         type === 'open' ? this.panels[i].removeAttribute('hidden') : this.panels[i].setAttribute('hidden', 'hidden');
         this.tabs[i].setAttribute('aria-selected', this.tabs[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true' );
+        this.titles[i].setAttribute('aria-selected', this.titles[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true' );
         (type === 'open' ? this.tabs[i] : this.tabs[this.current]).setAttribute('tabindex', (type === 'open' ? '0' : '-1'));
         (type === 'open' ? this.panels[i] : this.panels[this.current]).setAttribute('tabindex', (type === 'open' ? '0' : '-1'));
     },
