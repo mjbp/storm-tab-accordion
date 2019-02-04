@@ -1,6 +1,6 @@
 /**
  * @name storm-tab-accordion: Accessible tab and accordion ui component for multi-panelled content areas
- * @version 1.3.4: Fri, 29 Jun 2018 12:23:03 GMT
+ * @version 1.3.5: Mon, 04 Feb 2019 08:55:24 GMT
  * @author stormid
  * @license MIT
  */
@@ -75,6 +75,8 @@ var componentPrototype = {
             _this2.panels[i].setAttribute('role', 'tabpanel');
             _this2.panels[i].setAttribute('hidden', 'hidden');
             _this2.panels[i].setAttribute('tabindex', '-1');
+            _this2.titles[i].setAttribute('aria-selected', false);
+            _this2.titles[i].setAttribute('aria-controls', _this2.panels[i].getAttribute('id'));
             if (!_this2.panels[i].firstElementChild || _this2.panels[i].firstElementChild.hasAttribute('tabindex')) return;
             _this2.panels[i].firstElementChild.setAttribute('tabindex', '-1');
         });
@@ -159,6 +161,7 @@ var componentPrototype = {
         this.panels[i].classList[type === 'open' ? 'add' : 'remove'](this.settings.currentClass);
         type === 'open' ? this.panels[i].removeAttribute('hidden') : this.panels[i].setAttribute('hidden', 'hidden');
         this.tabs[i].setAttribute('aria-selected', this.tabs[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true');
+        this.titles[i].setAttribute('aria-selected', this.titles[i].getAttribute('aria-selected') === 'true' ? 'false' : 'true');
         (type === 'open' ? this.tabs[i] : this.tabs[this.current]).setAttribute('tabindex', type === 'open' ? '0' : '-1');
         (type === 'open' ? this.panels[i] : this.panels[this.current]).setAttribute('tabindex', type === 'open' ? '0' : '-1');
     },
